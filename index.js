@@ -13,12 +13,14 @@ const io = new Server(server, {
 });
 io.on("connection", (socket) => {
   console.log("user connected");
-  socket.on("sendReceiverDetails", (data) => {
-    io.emit("paymentConfirmAlert", { alert: data.NewReceiver });
-    socket.on("confirmPayment", (data) => {
-      if (data.pay) {
-        io.emit("paymentSuccess", true);
-      }
+  socket.on("paymentPageConnected", (data) => {
+    socket.on("sendReceiverDetails", (data) => {
+      io.emit("paymentConfirmAlert", { alert: data.NewReceiver });
+      socket.on("confirmPayment", (data) => {
+        if (data.pay) {
+          io.emit("paymentSuccess", true);
+        }
+      });
     });
   });
 });
