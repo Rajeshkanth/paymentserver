@@ -11,19 +11,13 @@ const io = new Server(server, {
     origin: "*",
   },
 });
+
+var val = 1;
 io.on("connection", (socket) => {
-  console.log("user connected");
+  console.log(`user connected ${val + 1}`);
   socket.on("paymentPageConnected", (data) => {
     if (data.connected) {
-      socket.on("sendReceiverDetails", (value) => {
-        console.log(value[0].NewReceiver);
-        io.emit("paymentConfirmAlert", { alert: value.NewReceiver });
-        socket.on("confirmPayment", (val) => {
-          if (val.pay) {
-            io.emit("paymentSuccess", true);
-          }
-        });
-      });
+      io.emit("loading", { isLoading: true });
     }
   });
 });
