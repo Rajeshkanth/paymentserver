@@ -20,12 +20,12 @@ io.on("connection", (socket) => {
     if (data.connected) {
       io.emit("paymentConfirmAlert", { receivedValu: data.newReceiver });
       //   io.emit("loading", { isLoading: true });
-      socket.on("clicked", (value) => {
-        if (value.clicked) {
-          io.emit("success", true);
-        }
-      });
     }
+    io.on("clicked", (value) => {
+      if (value.clicked) {
+        io.emit("success", true);
+      }
+    });
   });
 });
 
