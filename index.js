@@ -16,6 +16,7 @@ io.on("connection", (socket) => {
   socket.on("paymentPageConnected", (data) => {
     if (data.connected) {
       socket.on("sendReceiverDetails", (value) => {
+        console.log(value[0].NewReceiver);
         io.emit("paymentConfirmAlert", { alert: value.NewReceiver });
         socket.on("confirmPayment", (val) => {
           if (val.pay) {
