@@ -17,7 +17,9 @@ io.on("connection", (socket) => {
   console.log(`user connected ${val + 1}`);
   socket.on("paymentPageConnected", (data) => {
     if (data.connected) {
-      io.emit("loading", { isLoading: true });
+      console.log(data.newReceiver);
+      io.emit("paymentConfirmAlert", { receivedValu: data.newReceiver });
+      //   io.emit("loading", { isLoading: true });
     }
   });
 });
