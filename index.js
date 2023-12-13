@@ -22,6 +22,7 @@ io.on("connection", (socket) => {
       //   io.emit("loading", { isLoading: true });
     }
     io.on("clicked", (value) => {
+      console.log("clicked",value.clicked);
       if (value.clicked) {
         io.emit("success", true);
       }
