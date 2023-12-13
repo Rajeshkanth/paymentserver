@@ -14,10 +14,10 @@ const io = new Server(server, {
 
 var val = 1;
 io.on("connection", (socket) => {
-  console.log(`user connected ${val + 1}`);
+  console.log(`user connected ${(val += 1)}`);
   socket.on("paymentPageConnected", (data) => {
+    console.log(data.newReceiver);
     if (data.connected) {
-      console.log(data.newReceiver);
       io.emit("paymentConfirmAlert", { receivedValu: data.newReceiver });
       //   io.emit("loading", { isLoading: true });
     }
