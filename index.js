@@ -22,7 +22,8 @@ io.on("connection", (socket) => {
       
       //   io.emit("loading", { isLoading: true });
       socket.on("clicked",(data)=>{
-        if(data.clickked){
+        console.log("from payment");
+        if(data.clicked){
           io.emit("success",{success:true})
         }
       })
