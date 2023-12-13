@@ -21,15 +21,17 @@ io.on("connection", (socket) => {
       io.emit("paymentConfirmAlert", { receivedValu: data.NewReceiver });
       //   io.emit("loading", { isLoading: true });
     }
-    io.on("clicked", (value) => {
+    
+  });
+  socket.on("clicked", (value) => {
       console.log("clicked",value.clicked);
       if (value.clicked) {
         io.emit("success", true);
       }
     });
-  });
+ 
 });
 
-server.listen(3002, () => {
+server.listen(3004, () => {
   console.log("server running on 3002");
 });
