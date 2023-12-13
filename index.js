@@ -21,14 +21,10 @@ io.on("connection", (socket) => {
       io.emit("paymentConfirmAlert", { receivedValu: data.NewReceiver });
       //   io.emit("loading", { isLoading: true });
     }
-    
   });
-  socket.on("clicked", (value) => {
-      console.log("clicked",value.clicked);
-      if (value.clicked) {
-        io.emit("success", true);
-      }
-    });
+socket.on("fromPayment",(data)=>{
+  console.log(data.from)
+})
  
 });
 
