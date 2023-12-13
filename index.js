@@ -12,9 +12,10 @@ const io = new Server(server, {
   },
 });
 io.on("connection", (socket) => {
+  console.log("user connected");
   socket.on("amountSend", (data) => {});
 });
 
 server.listen(3002, () => {
-  console.log("user connected");
+  console.log("server running on 3002");
 });
