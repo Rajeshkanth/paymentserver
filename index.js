@@ -6,9 +6,11 @@ const cors = require("cors");
 app.use(cors());
 const server = http.createServer(app);
 
+const websiteList=["http://localhost:3001","http://localhost:3002"]
+
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: websiteList,
   },
 });
 
@@ -18,13 +20,13 @@ io.on("connection", (socket) => {
   socket.on("paymentPageConnected", (data) => {
     console.log(data.NewReceiver);
     if (data.connected) {
-      io.emit("paymentConfirmAlert", { receivedValu: data.NewReceiver });
+      socket.broadcast.emit("paymentConfirmAlert", { receivedValu: data.NewReceiver });
       
       //   io.emit("loading", { isLoading: true });
       socket.on("clicked",(data)=>{
         console.log("from payment");
         if(data.clicked){
-          io.emit("success",{success:true})
+          socket.broadcast.emit("success",{success:true})
         }
       })
     }
