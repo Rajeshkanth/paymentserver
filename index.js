@@ -7,8 +7,8 @@ app.use(cors());
 const server = http.createServer(app);
 
 const websiteList = [
+  "http://localhost:3000",
   "http://localhost:3001",
-  "http://localhost:3002",
   "https://781b-115-245-170-206.ngrok-free.app/",
 ];
 
