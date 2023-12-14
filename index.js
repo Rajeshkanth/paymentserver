@@ -9,7 +9,7 @@ const server = http.createServer(app);
 const websiteList = [
   "http://localhost:3001",
   "http://localhost:3002",
-  "https://d818-2409-408d-4e9e-63b4-70b6-e945-3608-61d6.ngrok-free.app",
+  "https://781b-115-245-170-206.ngrok-free.app/",
 ];
 
 const io = new Server(server, {
