@@ -6,7 +6,11 @@ const cors = require("cors");
 app.use(cors());
 const server = http.createServer(app);
 
-const websiteList=["http://localhost:3001","http://localhost:3002"]
+const websiteList = [
+  "http://localhost:3001",
+  "http://localhost:3002",
+  "https://d818-2409-408d-4e9e-63b4-70b6-e945-3608-61d6.ngrok-free.app",
+];
 
 const io = new Server(server, {
   cors: {
@@ -20,21 +24,19 @@ io.on("connection", (socket) => {
   socket.on("paymentPageConnected", (data) => {
     console.log(data.NewReceiver);
     if (data.connected) {
-      socket.broadcast.emit("paymentConfirmAlert", { receivedValu: data.NewReceiver });
-      
-      //   io.emit("loading", { isLoading: true });
-      socket.on("clicked",(data)=>{
-        console.log("from payment");
-        if(data.clicked){
-          socket.broadcast.emit("success",{success:true})
-        }
-      })
+      io.emit("paymentConfirmAlert", {
+        receivedValu: data.NewReceiver,
+      });
     }
   });
-
- 
+  socket.on("clicked", (data) => {
+    console.log(data);
+    if (data.clicked) {
+      io.emit("success", true);
+    }
+  });
 });
 
 server.listen(3004, () => {
-  console.log("server running on 3002");
+  console.log("server running on 3004");
 });
