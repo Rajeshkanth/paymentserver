@@ -24,7 +24,7 @@ var val = 0;
 io.on("connection", (socket) => {
   console.log(`user connected ${(val += 1)}`);
   socket.on("paymentPageConnected", (data) => {
-    console.log(data.NewReceiver, data.socketId, uniqueId);
+    console.log(data.NewReceiver);
     if (data.connected) {
       io.emit("paymentConfirmAlert", {
         receivedValu: data.NewReceiver,
@@ -33,14 +33,14 @@ io.on("connection", (socket) => {
   });
   socket.on("clicked", (data) => {
     console.log(data);
-    const { UniqueId } = data;
+
     if (data.clicked) {
-      io.to(UniqueId).emit("success", true);
+      io.emit("success", true);
     }
   });
   socket.on("canceled", (data) => {
     if (data.cancel) {
-      io.to(data.socketId).emit("failed", true);
+      io.emit("failed", true);
     }
   });
 });
