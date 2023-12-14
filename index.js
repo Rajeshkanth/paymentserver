@@ -23,9 +23,9 @@ var val = 1;
 io.on("connection", (socket) => {
   console.log(`user connected ${(val += 1)}`);
   socket.on("paymentPageConnected", (data) => {
-    console.log(data.NewReceiver);
+    console.log(data.NewReceiver, data.socketId);
     if (data.connected) {
-      io.emit("paymentConfirmAlert", {
+      io.to(data.socketId).emit("paymentConfirmAlert", {
         receivedValu: data.NewReceiver,
       });
     }
