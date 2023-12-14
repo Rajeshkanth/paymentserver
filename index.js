@@ -20,26 +20,39 @@ const io = new Server(server, {
 });
 
 var val = 1;
+const alertSockets = new Map();
+
 io.on("connection", (socket) => {
   console.log(`user connected ${(val += 1)}`);
   socket.on("paymentPageConnected", (data) => {
+    const { socketId } = data;
     console.log(data.NewReceiver, data.socketId);
     if (data.connected) {
-      io.emit("paymentConfirmAlert", {
-        receivedValu: data.NewReceiver,
-        socketId: data.socketId,
-      });
+      alertSockets.set(socketId, socket),
+        io.emit("paymentConfirmAlert", {
+          receivedValu: data.NewReceiver,
+
+          socketId: data.socketId,
+        });
     }
   });
   socket.on("clicked", (data) => {
     console.log(data);
     if (data.clicked) {
-      io.to(data.socketId).emit("success", true);
+      const specificSocket = alertSockets.get(data.socketId);
+      if (specificSocket) {
+        specificSocket.emit("success", true);
+      }
+      // io.to(data.socketId).emit("success", true);
     }
   });
   socket.on("canceled", (data) => {
     if (data.cancel) {
-      io.to(data.socketId).emit("failed", true);
+      const specificSocket = alertSockets.get(data.socketId); // Get the specific socket
+      if (specificSocket) {
+        specificSocket.emit("failed", true);
+      }
+      // io.to(data.socketId).emit("failed", true);
     }
   });
 });
