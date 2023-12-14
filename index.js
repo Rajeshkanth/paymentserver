@@ -7,11 +7,10 @@ app.use(cors());
 const server = http.createServer(app);
 
 const websiteList = [
-  "http://localhost:3000",
   "https://rajeshkanth.github.io/payment-app",
-  "http://localhost:3001",
+  "http://localhost:3000",
 
-  "https://95f8-115-245-170-206.ngrok-free.app",
+  "http://localhost:3001",
 ];
 
 const io = new Server(server, {
