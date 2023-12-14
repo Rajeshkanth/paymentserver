@@ -36,6 +36,11 @@ io.on("connection", (socket) => {
       io.emit("success", true);
     }
   });
+  socket.on("canceled", (data) => {
+    if (data.cancel) {
+      io.emit("failed", true);
+    }
+  });
 });
 
 server.listen(3004, () => {
