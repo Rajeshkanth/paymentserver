@@ -15,7 +15,7 @@ const websiteList = [
 
 const io = new Server(server, {
   cors: {
-    origin: websiteList,
+    origin: "*",
   },
 });
 
