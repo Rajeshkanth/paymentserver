@@ -25,7 +25,7 @@ io.on("connection", (socket) => {
   socket.on("paymentPageConnected", (data) => {
     console.log(data.NewReceiver);
     if (data.connected) {
-      io.emit("paymentConfirmAlert", {
+      io.to(data.socketId).emit("paymentConfirmAlert", {
         receivedValu: data.NewReceiver,
       });
     }
@@ -33,7 +33,7 @@ io.on("connection", (socket) => {
   socket.on("clicked", (data) => {
     console.log(data);
     if (data.clicked) {
-      io.emit("success", true);
+      io.to(data.socketId).emit("success", true);
     }
   });
   socket.on("canceled", (data) => {
