@@ -25,25 +25,26 @@ const alertSockets = new Map();
 io.on("connection", (socket) => {
   console.log(`user connected ${(val += 1)}`);
   socket.on("paymentPageConnected", (data) => {
-    const { socketId } = data;
-    console.log(data.NewReceiver, data.socketId);
+    const { socketId, uniqueId } = data;
+    console.log(data.NewReceiver, data.socketId, uniqueId);
     if (data.connected) {
-      alertSockets.set(socketId, socket),
+      alertSockets.set(socketId, uniqueId, socket),
         io.emit("paymentConfirmAlert", {
           receivedValu: data.NewReceiver,
-
-          socketId: data.socketId,
+          UniqueId: uniqueId,
+          SocketId: socketId,
         });
     }
   });
   socket.on("clicked", (data) => {
     console.log(data);
+    const { UniqueId } = data;
     if (data.clicked) {
       const specificSocket = alertSockets.get(data.socketId);
-      if (specificSocket) {
-        specificSocket.emit("success", true);
-      }
-      // io.to(data.socketId).emit("success", true);
+      // if (specificSocket) {
+      //   specificSocket.emit("success", true);
+      // }
+      io.to(UniqueId).emit("success", true);
     }
   });
   socket.on("canceled", (data) => {
