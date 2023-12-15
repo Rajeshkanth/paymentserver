@@ -23,28 +23,34 @@ var val = 0;
 
 io.on("connection", (socket) => {
   const { source } = socket.handshake.query;
-  console.log(`user connected ${(val += 1)} ${source}`);
-  socket.join(source);
-  socket.on("paymentPageConnected", (data) => {
-    console.log(data.NewReceiver, +" " + source);
+  console.log(`user connected: ${source}`);
 
+  socket.join(source); // Join the room corresponding to the tab identifier
+
+  socket.on("paymentPageConnected", (data) => {
     if (data.connected) {
       io.to(source).emit("paymentConfirmAlert", {
-        receivedValu: data.NewReceiver,
+        receivedValue: data.NewReceiver,
       });
     }
   });
-  socket.on("clicked", (data) => {
-    console.log(data);
 
+  socket.on("clicked", (data) => {
     if (data.clicked) {
       io.to(source).emit("success", true);
     }
   });
+
   socket.on("canceled", (data) => {
     if (data.cancel) {
-      io.emit("failed", true);
+      io.to(source).emit("failed", true);
     }
+  });
+
+  // Add error handling for each event if needed
+  socket.onAny((event, ...args) => {
+    console.log(`Received event: ${event}`);
+    // Handle any errors or debug logs here
   });
 });
 
