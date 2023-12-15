@@ -23,7 +23,7 @@ var val = 0;
 
 io.on("connection", (socket) => {
   // const { source } = socket.handshake.query;
-  console.log(`user connected: ${val++} ${source}`);
+  console.log(`user connected: ${val++} `);
 
   // Join the room corresponding to the tab identifier
 
