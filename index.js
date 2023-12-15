@@ -24,7 +24,8 @@ var val = 0;
 io.on("connection", (socket) => {
   // const { source } = socket.handshake.query;
   console.log(`user connected: ${val++} `);
-  const { socketId } = socket.id;
+  const socketId = socket.id;
+  console.log(socketId);
   // socket.userRooms = [];
 
   // Join the room corresponding to the tab identifier
