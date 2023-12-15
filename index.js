@@ -24,12 +24,12 @@ var val = 0;
 io.on("connection", (socket) => {
   const { source } = socket.handshake.query;
   console.log(`user connected ${(val += 1)} ${source}`);
+  socket.join(source);
   socket.on("paymentPageConnected", (data) => {
     console.log(data.NewReceiver, +" " + source);
-    const id = data.ID;
-    socket.join(id);
+
     if (data.connected) {
-      io.to(id).emit("paymentConfirmAlert", {
+      io.to(source).emit("paymentConfirmAlert", {
         receivedValu: data.NewReceiver,
       });
     }
