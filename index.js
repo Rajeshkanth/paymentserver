@@ -30,7 +30,7 @@ io.on("connection", (socket) => {
   socket.on("paymentPageConnected", (data) => {
     socket.join(source);
     if (data.connected) {
-      io.to(source).emit("paymentConfirmAlert", {
+      io.emit("paymentConfirmAlert", {
         receivedValue: data.NewReceiver,
       });
     }
