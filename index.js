@@ -42,8 +42,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("clicked", (data) => {
-    socket.join(room);
     const room = data.Room;
+    socket.join(room);
     console.log(`payment confirmed ${room}`);
     if (data.clicked) {
       io.to(room).emit("success", true);
