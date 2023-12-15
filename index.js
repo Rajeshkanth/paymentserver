@@ -22,9 +22,9 @@ const io = new Server(server, {
 var val = 0;
 
 io.on("connection", (socket) => {
-  // const { source } = socket.handshake.query;
+  const { source } = socket.handshake.query;
   console.log(`user connected: ${val++} `);
-  const socketId = socket.id;
+  const socketId = `${socket.id} - ${source} `;
   console.log(socketId);
   // socket.userRooms = [];
 
