@@ -22,29 +22,34 @@ const io = new Server(server, {
 var val = 0;
 
 io.on("connection", (socket) => {
-  const { source } = socket.handshake.query;
+  // const { source } = socket.handshake.query;
   console.log(`user connected: ${val++} ${source}`);
 
   // Join the room corresponding to the tab identifier
 
   socket.on("paymentPageConnected", (data) => {
     // socket.join(source);
+    const room = data.Room;
+    socket.join(room);
+    console.log(data.NewReceiver);
     if (data.connected) {
       io.emit("paymentConfirmAlert", {
         receivedValue: data.NewReceiver,
+        Room: room,
       });
     }
   });
 
   socket.on("clicked", (data) => {
+    const room = data.Room;
     if (data.clicked) {
-      io.to(source).emit("success", true);
+      io.to(room).emit("success", true);
     }
   });
 
   socket.on("canceled", (data) => {
     if (data.cancel) {
-      io.to(source).emit("failed", true);
+      io.to(room).emit("failed", true);
     }
   });
 
