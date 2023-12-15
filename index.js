@@ -22,10 +22,9 @@ const io = new Server(server, {
 var val = 0;
 
 io.on("connection", (socket) => {
-  const { source } = socket.handshake.query;
-  console.log(`user connected: ${val++} `);
-  const socketId = `${socket.id} - ${source} `;
-  console.log(socketId);
+  const { source, from } = socket.handshake.query;
+  const socketId = `${socket.id} - ${source}- ${from} `;
+  console.log(`user connected: ${val++} :${socketId}`);
 
   // Join the room corresponding to the tab identifier
   io.emit("uniqueID", { Socket: socketId });
@@ -34,7 +33,7 @@ io.on("connection", (socket) => {
     if (data.connected) {
       io.emit("paymentConfirmAlert", {
         receivedValue: data.NewReceiver,
-        UniqueId: data.UniqueID,
+        UniqueId: data.uniqueID,
       });
     }
   });
