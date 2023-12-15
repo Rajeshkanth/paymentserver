@@ -31,7 +31,8 @@ io.on("connection", (socket) => {
     // socket.join(source);
     const room = data.Room;
     socket.join(room);
-    console.log(data.NewReceiver);
+    // console.log(room);
+    console.log(data.NewReceiver, room);
     if (data.connected) {
       io.emit("paymentConfirmAlert", {
         receivedValue: data.NewReceiver,
@@ -42,6 +43,7 @@ io.on("connection", (socket) => {
 
   socket.on("clicked", (data) => {
     const room = data.Room;
+    console.log(`payment confirmed ${room}`);
     if (data.clicked) {
       io.to(room).emit("success", true);
     }
