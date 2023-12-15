@@ -26,8 +26,8 @@ io.on("connection", (socket) => {
   console.log(`user connected ${(val += 1)} ${source}`);
   socket.on("paymentPageConnected", (data) => {
     console.log(data.NewReceiver, +" " + source);
-    if (data.connected) {
-      io.emit("paymentConfirmAlert", {
+    if (data.connected && source === socket.handshake.query) {
+      io.to(source).emit("paymentConfirmAlert", {
         receivedValu: data.NewReceiver,
       });
     }
@@ -36,7 +36,7 @@ io.on("connection", (socket) => {
     console.log(data);
 
     if (data.clicked) {
-      io.emit("success", true);
+      io.to(source).emit("success", true);
     }
   });
   socket.on("canceled", (data) => {
