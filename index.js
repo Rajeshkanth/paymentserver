@@ -23,11 +23,12 @@ var val = 0;
 
 io.on("connection", (socket) => {
   const { source } = socket.handshake.query;
-  console.log(`user connected: ${source}`);
+  console.log(`user connected: ${val++} ${source}`);
 
-  socket.join(source); // Join the room corresponding to the tab identifier
+  // Join the room corresponding to the tab identifier
 
   socket.on("paymentPageConnected", (data) => {
+    socket.join(source);
     if (data.connected) {
       io.to(source).emit("paymentConfirmAlert", {
         receivedValue: data.NewReceiver,
