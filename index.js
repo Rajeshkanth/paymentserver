@@ -28,7 +28,7 @@ io.on("connection", (socket) => {
   // Join the room corresponding to the tab identifier
 
   socket.on("paymentPageConnected", (data) => {
-    socket.join(source);
+    // socket.join(source);
     if (data.connected) {
       io.emit("paymentConfirmAlert", {
         receivedValue: data.NewReceiver,
@@ -49,10 +49,10 @@ io.on("connection", (socket) => {
   });
 
   // Add error handling for each event if needed
-  socket.onAny((event, ...args) => {
-    console.log(`Received event: ${event}`);
-    // Handle any errors or debug logs here
-  });
+  // socket.onAny((event, ...args) => {
+  //   console.log(`Received event: ${event}`);
+  //   // Handle any errors or debug logs here
+  // });
 });
 
 server.listen(3004, () => {
