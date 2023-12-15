@@ -24,38 +24,39 @@ var val = 0;
 io.on("connection", (socket) => {
   // const { source } = socket.handshake.query;
   console.log(`user connected: ${val++} `);
-  socket.userRooms = [];
+  const { socketId } = socket.id;
+  // socket.userRooms = [];
 
   // Join the room corresponding to the tab identifier
 
   socket.on("paymentPageConnected", (data) => {
     // socket.join(source);
-    const room = data.Room;
+    // const room = data.Room;
 
     // socket.userRooms.push(room);
     // console.log(room);
-    console.log(data.NewReceiver, room);
+    console.log(data.NewReceiver);
     if (data.connected) {
       io.emit("paymentConfirmAlert", {
         receivedValue: data.NewReceiver,
-        Room: room,
+        // Room: room,
       });
     }
   });
 
   socket.on("clicked", (data) => {
-    const room = data.Room;
-    socket.join(room);
-    console.log(`payment confirmed ${room}`);
+    // const room = data.Room;
+    // socket.join(room);
+    console.log(`payment confirmed ${socketId}`);
     if (data.clicked) {
-      io.to(room).emit("success", { Success: true, Room: room });
+      io.emit("success", { Success: true });
     }
-    socket.leave(room);
+    // socket.leave(room);
   });
 
   socket.on("canceled", (data) => {
     if (data.cancel) {
-      io.to(room).emit("failed", true);
+      io.emit("failed", true);
     }
   });
 
