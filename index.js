@@ -22,9 +22,10 @@ const io = new Server(server, {
 var val = 0;
 
 io.on("connection", (socket) => {
-  console.log(`user connected ${(val += 1)}`);
+  const { source } = socket.handshake.query;
+  console.log(`user connected ${(val += 1)} ${source}`);
   socket.on("paymentPageConnected", (data) => {
-    console.log(`Payment Page connected ${data.NewReceiver}`);
+    console.log(data.NewReceiver, +" " + source);
     if (data.connected) {
       io.emit("paymentConfirmAlert", {
         receivedValu: data.NewReceiver,
