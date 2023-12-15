@@ -26,33 +26,24 @@ io.on("connection", (socket) => {
   console.log(`user connected: ${val++} `);
   const socketId = `${socket.id} - ${source} `;
   console.log(socketId);
-  // socket.userRooms = [];
 
   // Join the room corresponding to the tab identifier
-
+  io.emit("uniqueID", { Socket: socketId });
   socket.on("paymentPageConnected", (data) => {
-    // socket.join(source);
-    // const room = data.Room;
-
-    // socket.userRooms.push(room);
-    // console.log(room);
     console.log(data.NewReceiver);
     if (data.connected) {
       io.emit("paymentConfirmAlert", {
         receivedValue: data.NewReceiver,
-        // Room: room,
+        UniqueId: data.UniqueID,
       });
     }
   });
 
   socket.on("clicked", (data) => {
-    // const room = data.Room;
-    // socket.join(room);
-    console.log(`payment confirmed ${socketId}`);
+    console.log(`payment confirmed ${data.UniqueId}`);
     if (data.clicked) {
-      io.emit("success", { Success: true });
+      io.emit("success", { Success: true, UniqueId: data.UniqueId });
     }
-    // socket.leave(room);
   });
 
   socket.on("canceled", (data) => {
@@ -60,12 +51,6 @@ io.on("connection", (socket) => {
       io.emit("failed", true);
     }
   });
-
-  // Add error handling for each event if needed
-  // socket.onAny((event, ...args) => {
-  //   console.log(`Received event: ${event}`);
-  //   // Handle any errors or debug logs here
-  // });
 });
 
 server.listen(3004, () => {
