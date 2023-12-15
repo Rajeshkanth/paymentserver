@@ -30,7 +30,7 @@ io.on("connection", (socket) => {
   socket.on("paymentPageConnected", (data) => {
     // socket.join(source);
     const room = data.Room;
-
+    socket.join(room);
     // console.log(room);
     console.log(data.NewReceiver, room);
     if (data.connected) {
@@ -43,11 +43,12 @@ io.on("connection", (socket) => {
 
   socket.on("clicked", (data) => {
     const room = data.Room;
-    socket.join(room);
+
     console.log(`payment confirmed ${room}`);
     if (data.clicked) {
       io.to(room).emit("success", true);
     }
+    socket.leave(room);
   });
 
   socket.on("canceled", (data) => {
