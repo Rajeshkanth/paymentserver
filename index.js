@@ -26,8 +26,10 @@ io.on("connection", (socket) => {
   console.log(`user connected ${(val += 1)} ${source}`);
   socket.on("paymentPageConnected", (data) => {
     console.log(data.NewReceiver, +" " + source);
-    if (data.connected && source === socket.handshake.query) {
-      io.to(source).emit("paymentConfirmAlert", {
+    const id = data.ID;
+    socket.join(id);
+    if (data.connected) {
+      io.to(id).emit("paymentConfirmAlert", {
         receivedValu: data.NewReceiver,
       });
     }
