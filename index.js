@@ -37,8 +37,9 @@ io.on("connection", (socket) => {
   //   socket.join(roomName);
   //   io.emit("room_name", roomName);
   // });
-  let socketId;
+
   socket.on("paymentPageConnected", (data) => {
+    let socketId;
     const room = data.NewReceiver.tabId;
     console.log(data.NewReceiver);
     socketRooms.set(socket.id, room);
@@ -53,13 +54,14 @@ io.on("connection", (socket) => {
       io.emit("paymentConfirmAlert", {
         receivedValue: data.NewReceiver,
         UniqueId: room,
+        socketRoom: socketId,
       });
     }
   });
 
   socket.on("join_success_room", (data) => {
     // const room = socketRooms.get(socket.id);
-
+    const socketId = data.SocketRoom;
     console.log("room joined from success page");
     socket.join(socketId);
   });
