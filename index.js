@@ -23,20 +23,7 @@ var val = 0;
 const socketRooms = new Map();
 
 io.on("connection", (socket) => {
-  // const { source, from } = socket.handshake.query;
-  // const socketId = `${socket.id} - ${source}- ${from} `;
   console.log(`user connected: ${val++} , ${socket.id}`);
-
-  // Join the room corresponding to the tab identifier
-
-  // socket.on("join_room", (data) => {
-  //   console.log(`user connected ${socket.id}, in room ${data} `);
-  //   socketRooms.set(socket.id, data);
-  //   const roomName = data;
-  //   console.log("room name from join room", roomName);
-  //   socket.join(roomName);
-  //   io.emit("room_name", roomName);
-  // });
 
   socket.on("paymentPageConnected", (data) => {
     let socketId;
@@ -60,18 +47,18 @@ io.on("connection", (socket) => {
   });
 
   socket.on("join_success_room", (data) => {
-    // const room = socketRooms.get(socket.id);
-    const socketId = data.SocketRoom;
-    console.log("room joined from success page");
-    socket.join(socketId);
+    const socketID = data.SocketRoom;
+
+    socket.join(socketID);
+    console.log("room joined from success page", socketID);
   });
-  console.log("room id from outside,", socketRooms);
 
   socket.on("clicked", (data) => {
-    const roomName = socketId;
+    const roomName = data.SocketRoom;
+    console.log("tab id", data.tabId);
     console.log(`payment confirmed ${roomName}`);
     if (data.clicked) {
-      io.to(roomName).emit("success", true);
+      io.to(data.tabId).emit("success", true); // Emit success to specific tabId
     }
   });
 
@@ -82,82 +69,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3004, () => {
+server.listen(3009, () => {
   console.log("server running on 3004");
 });
-
-// const express = require("express");
-// const app = express();
-// const http = require("http");
-// const { Server } = require("socket.io");
-// const cors = require("cors");
-
-// app.use(cors());
-// const server = http.createServer(app);
-// const io = new Server(server, {
-//   cors: {
-//     origin: "*",
-//   },
-// });
-
-// var val = 0;
-// const tabRooms = {};
-
-// io.on("connection", (socket) => {
-//   console.log(`user connected: ${val++} , ${socket.id}`);
-
-//   socket.on("paymentPageConnected", (data) => {
-//     const room = data.Uid;
-//     const TabId = data.tabId;
-
-//     console.log(TabId);
-//     console.log(data.NewReceiver);
-
-//     if (!tabRooms[TabId]) {
-//       tabRooms[TabId] = [];
-//     }
-
-//     tabRooms[TabId].push(room);
-//     socket.join(room);
-//     console.log(tabRooms[TabId]);
-
-//     if (data.connected) {
-//       io.emit("paymentConfirmAlert", {
-//         receivedValue: data.NewReceiver,
-//         UniqueId: room,
-//         tabId: TabId,
-//       });
-//     }
-//   });
-
-//   socket.on("join_success_room", (data) => {
-//     const tabId = data.tabId;
-//     const rooms = tabRooms[tabId] || [];
-
-//     rooms.forEach((room) => {
-//       socket.join(room);
-//       console.log("room joined from success page", room);
-//     });
-//   });
-
-//   socket.on("clicked", (data) => {
-//     const tabId = data.tabId;
-//     const rooms = tabRooms[tabId] || [];
-//     rooms.forEach((roomName) => {
-//       console.log(`payment confirmed ${roomName}`);
-//       if (data.clicked) {
-//         io.to(roomName).emit("success", true);
-//       }
-//     });
-//   });
-
-//   socket.on("canceled", (data) => {
-//     if (data.cancel) {
-//       io.emit("failed", true);
-//     }
-//   });
-// });
-
-// server.listen(3004, () => {
-//   console.log("server running on 3004");
-// });
