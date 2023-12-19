@@ -21,7 +21,6 @@ const io = new Server(server, {
 
 var val = 0;
 const socketRooms = new Map();
-let socketId;
 
 io.on("connection", (socket) => {
   // const { source, from } = socket.handshake.query;
@@ -38,10 +37,9 @@ io.on("connection", (socket) => {
   //   socket.join(roomName);
   //   io.emit("room_name", roomName);
   // });
-
+  let socketId;
   socket.on("paymentPageConnected", (data) => {
     const room = data.NewReceiver.tabId;
-
     console.log(data.NewReceiver);
     socketRooms.set(socket.id, room);
     for (const [key, value] of socketRooms.entries()) {
