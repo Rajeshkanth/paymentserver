@@ -48,7 +48,6 @@ io.on("connection", (socket) => {
 
   socket.on("join_success_room", (data) => {
     const socketID = data.SocketRoom;
-
     socket.join(socketID);
     console.log("room joined from success page", socketID);
   });
@@ -64,7 +63,7 @@ io.on("connection", (socket) => {
 
   socket.on("canceled", (data) => {
     if (data.cancel) {
-      io.emit("failed", true);
+      io.to(data.tabId).emit("failed", true);
     }
   });
 });
