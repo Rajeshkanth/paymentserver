@@ -40,7 +40,7 @@ io.on("connection", (socket) => {
   // });
 
   socket.on("paymentPageConnected", (data) => {
-    const room = data.Uid;
+    const room = data.NewReceiver.tabId;
 
     console.log(data.NewReceiver);
     socketRooms.set(socket.id, room);
